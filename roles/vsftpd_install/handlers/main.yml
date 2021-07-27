@@ -1,0 +1,9 @@
+---
+- name: services_restart
+  service:
+    name: "{{ item }}"
+    state: restarted
+  with_items:
+    - firewalld
+    - vsftpd
+...

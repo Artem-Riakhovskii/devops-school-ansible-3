@@ -1,0 +1,6 @@
+---
+- name: Task 3-2 playbook
+  hosts: nodes
+  roles:
+    - vsftpd_install
+...

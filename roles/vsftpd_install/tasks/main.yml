@@ -1,0 +1,37 @@
+---
+- name: Install vsftpd
+  yum:
+    name: vsftpd
+    state: present
+    update_cache: yes
+
+- name: Setup vsftpd.conf
+  template:
+    src: vsftpd.conf.j2
+    dest: /etc/vsftpd/vsftpd.conf
+
+- name: Create upload directory
+  file:
+    path: /var/ftp/pub/upload
+    state: directory
+    mode: 0222
+
+- name: Enable vsftpd
+  service:
+    name: vsftpd
+    enabled: yes
+    state: started
+
+- name: Add SELinux context
+  seboolean:
+    name: ftpd_anon_write
+    state: on
+    persistent: yes
+
+- name: Open ports required for web server
+  firewalld:
+    service: ftp
+    permanent: yes
+    state: enabled
+  notify: services_restart
+...

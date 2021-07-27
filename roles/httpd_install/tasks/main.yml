@@ -1,0 +1,30 @@
+---
+- name: Install httpd
+  yum:
+    name: httpd
+    state: present
+    update_cache: yes
+
+- name: Enable and check web server
+  service:
+    name: httpd
+    enabled: yes
+    state: started
+  register: httpd_status
+
+- name: Show current httpd status
+  debug:
+    msg: "{{ httpd_status.state }}"
+    
+- name: Create index.html
+  template:
+    src: index.html.j2
+    dest: /var/www/html/index.html
+
+- name: Open ports required for web server
+  firewalld:
+    service: http
+    permanent: yes
+    state: enabled
+  notify: firewalld_restart
+...

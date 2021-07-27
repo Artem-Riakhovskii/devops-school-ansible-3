@@ -1,0 +1,6 @@
+---
+- name: Task 3-1 playbook
+  hosts: nodes
+  roles:
+    - httpd_install
+...
